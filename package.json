@@ -4,13 +4,16 @@
 	"description": "Easy explore test run .json results",
 	"version": "0.0.4",
 	"publisher": "Ub1que",
-	"enableProposedApi": true,
 	"engines": {
 		"vscode": "^1.32.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Ub1que/test-run-explorer"
+	},
 	"activationEvents": [
 		"onView:nodeDependencies",
 		"onView:ftpExplorer",
