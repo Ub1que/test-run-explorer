@@ -21,7 +21,7 @@ export default class Test extends vscode.TreeItem {
 	}
 
 	get description(): string {
-		return `${this.entry.title}`;
+		return;
 	}
 
 	get iconPath() {

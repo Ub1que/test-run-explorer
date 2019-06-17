@@ -14,7 +14,7 @@ export default class Suite extends vscode.TreeItem {
 	}
 
 	get description(): string {
-		return `${this.entry.title}`;
+		return;
 	}
 
 	iconPath = {
