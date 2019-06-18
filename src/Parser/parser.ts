@@ -20,8 +20,8 @@ export default function codeParser(testName: string) {
 		tokens: true
 	};
 
-	const searchDir = vscode.workspace.rootPath + configuration.get("testsFolder");
-	const files = fg.sync([configuration.get("testsGlob")], {cwd: searchDir});
+	const searchDir = vscode.workspace.rootPath + configuration.get("local.testsFolder");
+	const files = fg.sync([configuration.get("local.testsGlob")], {cwd: searchDir});
 
 	const filesSoureCode = files.map((file: string) => {
 		const sourceCode = fs.readFileSync(path.join(searchDir, file),'utf-8');

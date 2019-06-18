@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as fg from 'fast-glob';
+import * as AWS from 'aws-sdk';
 
 import Spec from './Dependencies/Spec';
 import Suite from './Dependencies/Suite';
@@ -30,7 +31,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 
 	getChildren(element?: any): Thenable<any[]> {
 		if (!element) {
-			return Promise.resolve(this.getSpecDeps(this.jsonData));
+			return Promise.resolve(this.jsonData);
 		} else if (Array.isArray(element.entry)) {
 			return Promise.resolve(this.getDeps(element.entry[0]));
 		} else {
@@ -38,30 +39,86 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 		}
 	}
 
-	private getResults(){
+	private async getResults(){
 		const configuration = workspace.getConfiguration(
 			"test-run-explorer"
 		);
 
-		const searchDir = vscode.workspace.rootPath + configuration.get("resultFolder");
-		const files = fg.sync([configuration.get("resultGlob")], {cwd: searchDir});
+		const LOCAL = configuration.get("local");
+		const S3_BUCKET: string = configuration.get("s3.bucket");
+		const S3_FOLDER: string = configuration.get("s3.folder");
 
-		return files.map((file: string) => {
-				return {
-					filename: file,
-					entry: JSON.parse(fs.readFileSync(path.join(searchDir, file),'utf-8'))
-				};
-			});
-	}
+		if (S3_BUCKET) {
 
-	private getSpecDeps(arrayOfSpecObj: any[]): Spec[] {
-		return arrayOfSpecObj.map((spec: any) => {
-			return new Spec(
-				vscode.TreeItemCollapsibleState.Expanded,
-				spec.entry.results,
-				spec.filename
+			AWS.config.setPromisesDependency(null);
+			AWS.config.update(
+				{
+					accessKeyId: configuration.get("s3.aws_access_key_id"),
+					secretAccessKey: configuration.get("s3.aws_secret_access_key"),
+					region: configuration.get("s3.region")
+				}
 			);
-		});
+
+			const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+			const objects = await s3.listObjectsV2({
+				Bucket: S3_BUCKET,
+				Prefix: S3_FOLDER
+			}, function(err, data) {
+				if (err) return err;
+				else return data;
+			}).promise();
+
+			let promisedObjects = objects.Contents.map(obj => {
+				return s3.getObject({
+					Bucket: S3_BUCKET,
+					Key: obj.Key
+				}, function(err, data) {
+					if (err) return err;
+					else return data;
+				})
+				.promise()
+				.then(data => {
+					return {
+						filename: obj.Key,
+						entry: JSON.parse(data.Body.toString())
+					};
+				});
+			});
+
+			const resultData = await Promise.all(promisedObjects)
+				.then(result => result);
+
+			return resultData.map((spec: any) => {
+				return new Spec(
+					vscode.TreeItemCollapsibleState.Expanded,
+					spec.entry.results,
+					spec.filename
+				);
+			});
+
+		} else if (LOCAL) {
+
+			const searchDir = vscode.workspace.rootPath + configuration.get("local.resultFolder");
+			const files = fg.sync([configuration.get("local.resultGlob")], {cwd: searchDir});
+	
+			return files
+				.map((file: string) => {
+					return {
+						filename: file,
+						entry: JSON.parse(fs.readFileSync(path.join(searchDir, file),'utf-8'))
+					};
+				})
+				.map((spec: any) => {
+					return new Spec(
+						vscode.TreeItemCollapsibleState.Expanded,
+						spec.entry.results,
+						spec.filename
+					);
+				});
+		} else {
+			vscode.window.showInformationMessage(`Please provide "test-run-explorer" configuration in settings.json`);
+		}
+
 	}
 
 	private getDeps(rootObj): any[] {

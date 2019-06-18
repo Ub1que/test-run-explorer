@@ -2,7 +2,7 @@
 	"name": "test-run-explorer",
 	"displayName": "Test Run Explorer",
 	"description": "Easy explore test run .json results",
-	"version": "0.1.0",
+	"version": "0.0.4",
 	"publisher": "Ub1que",
 	"engines": {
 		"vscode": "^1.32.0"
@@ -176,10 +176,15 @@
 		},
 		"configuration": [
 			{
-				"title": "JSON Outline",
+				"title": "test-run-explorer",
+				"type": "object",
 				"properties": {
-					"jsonOutline.autorefresh": {
-						"type": "boolean",
+					"local": {
+						"type": "object",
+						"default": true
+					},
+					"s3": {
+						"type": "object",
 						"default": false
 					}
 				}
