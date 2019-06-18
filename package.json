@@ -2,7 +2,7 @@
 	"name": "test-run-explorer",
 	"displayName": "Test Run Explorer",
 	"description": "Easy explore test run .json results",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"publisher": "Ub1que",
 	"engines": {
 		"vscode": "^1.32.0"
