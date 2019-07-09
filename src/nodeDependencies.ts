@@ -50,7 +50,6 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 
 		if (S3_BUCKET) {
 
-			AWS.config.setPromisesDependency(null);
 			AWS.config.update(
 				{
 					accessKeyId: configuration.get("s3.aws_access_key_id"),
@@ -60,24 +59,28 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 			);
 
 			const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-			const objects = await s3.listObjectsV2({
-				Bucket: S3_BUCKET,
-				Prefix: S3_FOLDER
-			}, function(err, data) {
-				if (err) return err;
-				else return data;
-			}).promise();
+
+			const objects: any = await new Promise((resolve, reject) => {
+				s3.listObjectsV2({
+					Bucket: S3_BUCKET,
+					Prefix: S3_FOLDER
+				}, function(err, data) {
+					if (err) reject(err);
+					else resolve(data);
+				});
+			});
 
 			let promisedObjects = objects.Contents.map(obj => {
-				return s3.getObject({
-					Bucket: S3_BUCKET,
-					Key: obj.Key
-				}, function(err, data) {
-					if (err) return err;
-					else return data;
+				return new Promise((resolve,reject) => {
+					s3.getObject({
+						Bucket: S3_BUCKET,
+						Key: obj.Key
+					}, function(err, data) {
+						if (err) reject(err);
+						else resolve(data);
+					});
 				})
-				.promise()
-				.then(data => {
+				.then((data: any) => {
 					return {
 						filename: obj.Key,
 						entry: JSON.parse(data.Body.toString())
@@ -85,12 +88,11 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 				});
 			});
 
-			const resultData = await Promise.all(promisedObjects)
-				.then(result => result);
+			const resultData = await Promise.all(promisedObjects);
 
 			return resultData.map((spec: any) => {
 				return new Spec(
-					vscode.TreeItemCollapsibleState.Expanded,
+					vscode.TreeItemCollapsibleState.Collapsed,
 					spec.entry.results,
 					spec.filename
 				);
@@ -110,7 +112,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 				})
 				.map((spec: any) => {
 					return new Spec(
-						vscode.TreeItemCollapsibleState.Expanded,
+						vscode.TreeItemCollapsibleState.Collapsed,
 						spec.entry.results,
 						spec.filename
 					);
