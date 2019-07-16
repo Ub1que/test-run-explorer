@@ -39,6 +39,26 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 		}
 	}
 
+	private getCurrentLocalBranchLastCommitSHA(){
+		return new Promise((resolve, reject)=>{
+			let simpleGit;
+			try {
+				simpleGit = require('simple-git')(vscode.workspace.workspaceFolders[0].uri.fsPath);
+			} catch (error) {
+				vscode.window.showErrorMessage('Couldn\'t find git repository');
+			}
+
+			simpleGit.branchLocal((error, data) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve(data.branches[data.current].commit);
+				}
+			});
+
+		});
+	}
+
 	private async getResults(){
 		const configuration = workspace.getConfiguration(
 			"test-run-explorer"
@@ -46,9 +66,14 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 
 		const LOCAL = configuration.get("local");
 		const S3_BUCKET: string = configuration.get("s3.bucket");
-		const S3_FOLDER: string = configuration.get("s3.folder");
+		// const S3_FOLDER: string = configuration.get("s3.folder");
 
 		if (S3_BUCKET) {
+
+			const currentCommitSHA: any = await this.getCurrentLocalBranchLastCommitSHA()
+				.catch(error => {
+					vscode.window.showErrorMessage(error);
+				});
 
 			AWS.config.update(
 				{
@@ -63,7 +88,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 			const objects: any = await new Promise((resolve, reject) => {
 				s3.listObjectsV2({
 					Bucket: S3_BUCKET,
-					Prefix: S3_FOLDER
+					Prefix: currentCommitSHA
 				}, function(err, data) {
 					if (err) reject(err);
 					else resolve(data);
