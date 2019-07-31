@@ -48,11 +48,11 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 				vscode.window.showErrorMessage('Couldn\'t find git repository');
 			}
 
-			simpleGit.branchLocal((error, data) => {
+			simpleGit.log((error, data) => {
 				if (error) {
 					reject(error);
 				} else {
-					resolve(data.branches[data.current].commit);
+					resolve(data.latest.hash);
 				}
 			});
 
@@ -71,6 +71,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 		if (S3_BUCKET) {
 
 			const currentCommitSHA: any = await this.getCurrentLocalBranchLastCommitSHA()
+				.then((hash: string) => hash.slice(0, configuration.get("commitHashLength")))
 				.catch(error => {
 					vscode.window.showErrorMessage(error);
 				});
@@ -91,9 +92,16 @@ export class DepNodeProvider implements vscode.TreeDataProvider<any> {
 					Prefix: currentCommitSHA
 				}, function(err, data) {
 					if (err) reject(err);
-					else resolve(data);
+					else {
+						if (data.Contents.length === 0){
+							vscode.window.showInformationMessage(`No Objects found in S3 bucket "${S3_BUCKET}" with prefix "${currentCommitSHA}"`);
+						}
+						resolve(data);
+					}
 				});
 			});
+
+			objects.Contents = objects.Contents.filter(obj => obj.Size !== 0);
 
 			let promisedObjects = objects.Contents.map(obj => {
 				return new Promise((resolve,reject) => {
