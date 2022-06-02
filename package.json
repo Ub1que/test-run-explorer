@@ -88,17 +88,19 @@
 		"@types/mkdirp": "^0.5.2",
 		"@types/node": "*",
 		"@types/rimraf": "^2.0.2",
+		"@types/vscode": "^1.32.0",
 		"tslint": "^5.16.0",
-		"typescript": "^3.4.5",
-		"@types/vscode": "^1.32.0"
+		"typescript": "^3.4.5"
 	},
 	"dependencies": {
 		"@babel/core": "^7.0.0-beta.54",
 		"@babel/parser": "^7.0.0-beta.54",
 		"@babel/plugin-syntax-jsx": "^7.0.0-beta.54",
 		"@babel/plugin-syntax-typescript": "^7.0.0-beta.54",
+		"@google-cloud/storage": "^6.0.1",
 		"aws-sdk": "^2.477.0",
-		"fast-glob": "^2.2.7",
-		"simple-git": "^1.120.0"
+		"fast-glob": "^3.2.11",
+		"octokit": "^1.7.1",
+		"simple-git": "^3.7.1"
 	}
 }

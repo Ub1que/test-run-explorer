@@ -1,0 +1,209 @@
+{
+  "numFailedTestSuites": 1,
+  "numFailedTests": 1,
+  "numPassedTestSuites": 1,
+  "numPassedTests": 7,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 1,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 2,
+  "numTotalTests": 9,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1653489747742,
+  "success": false,
+  "testResults": [
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "openHandles": [],
+      "perfStats": {
+        "end": 1653489749902,
+        "runtime": 1523,
+        "slow": false,
+        "start": 1653489748379
+      },
+      "skipped": false,
+      "snapshot": {
+        "added": 0,
+        "fileDeleted": false,
+        "matched": 0,
+        "unchecked": 0,
+        "uncheckedKeys": [],
+        "unmatched": 0,
+        "updated": 0
+      },
+      "testFilePath": "/home/user51/project/denny/test/pup.test.js",
+      "testResults": [
+        {
+          "ancestorTitles": ["/ (Home Page)"],
+          "duration": 22,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "/ (Home Page) should load without error",
+          "invocations": 1,
+          "location": { "column": 5, "line": 12 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should load without error"
+        }
+      ],
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 1,
+      "numPassingTests": 6,
+      "numPendingTests": 1,
+      "numTodoTests": 0,
+      "openHandles": [],
+      "perfStats": {
+        "end": 1653489751534,
+        "runtime": 3166,
+        "slow": false,
+        "start": 1653489748368
+      },
+      "skipped": false,
+      "snapshot": {
+        "added": 0,
+        "fileDeleted": false,
+        "matched": 0,
+        "unchecked": 0,
+        "uncheckedKeys": [],
+        "unmatched": 0,
+        "updated": 0
+      },
+      "testFilePath": "/home/user51/project/denny/test/sum.test.js",
+      "testResults": [
+        {
+          "ancestorTitles": ["One", "One"],
+          "duration": 6,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One One child one",
+          "invocations": 1,
+          "location": { "column": 9, "line": 26 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "child one"
+        },
+        {
+          "ancestorTitles": ["One", "One"],
+          "duration": 0,
+          "failureDetails": [{}],
+          "failureMessages": [
+            "ReferenceError: loginm is not defined\n    at Object.loginm (/home/user51/project/denny/test/sum.test.js:42:32)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"
+          ],
+          "fullName": "One One child two",
+          "invocations": 1,
+          "location": { "column": 9, "line": 32 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "failed",
+          "title": "child two"
+        },
+        {
+          "ancestorTitles": ["One"],
+          "duration": 2,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One should load without error",
+          "invocations": 1,
+          "location": { "column": 5, "line": 54 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should load without error"
+        },
+        {
+          "ancestorTitles": ["One"],
+          "duration": 8,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One should load",
+          "invocations": 1,
+          "location": { "column": 5, "line": 60 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should load"
+        },
+        {
+          "ancestorTitles": ["One", "One"],
+          "duration": 5,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One One S child one",
+          "invocations": 1,
+          "location": { "column": 9, "line": 102 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "S child one"
+        },
+        {
+          "ancestorTitles": ["One", "One"],
+          "duration": null,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One One SKPD",
+          "invocations": 1,
+          "location": { "column": 12, "line": 108 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "pending",
+          "title": "SKPD"
+        },
+        {
+          "ancestorTitles": ["One"],
+          "duration": 2,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One S should load without error",
+          "invocations": 1,
+          "location": { "column": 5, "line": 130 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "S should load without error"
+        },
+        {
+          "ancestorTitles": ["One"],
+          "duration": 0,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "One S should load",
+          "invocations": 1,
+          "location": { "column": 5, "line": 136 },
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "S should load"
+        }
+      ],
+      "failureMessage": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mOne › One › child two\u001b[39m\u001b[22m\n\n    ReferenceError: loginm is not defined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 40 |\u001b[39m           \u001b[36mconst\u001b[39m login \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m text(\u001b[32m\"login\"\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 41 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 42 |\u001b[39m           console\u001b[33m.\u001b[39mlog(\u001b[32m\"login\"\u001b[39m\u001b[33m,\u001b[39m loginm)\u001b[33m;\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 43 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 44 |\u001b[39m           \u001b[36mawait\u001b[39m login\u001b[33m.\u001b[39mtype(\u001b[32m\"denny\"\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 45 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.loginm (\u001b[22m\u001b[2m\u001b[0m\u001b[36mtest/sum.test.js\u001b[39m\u001b[0m\u001b[2m:42:32)\u001b[22m\u001b[2m\u001b[22m\n"
+    }
+  ],
+  "wasInterrupted": false
+}
