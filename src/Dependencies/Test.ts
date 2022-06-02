@@ -12,8 +12,22 @@ export default class Test extends vscode.TreeItem {
 		this.command = {
 			title: 'Navigate',
 			command: 'nodeDependency.navigate',
-			arguments: [entry.title],
+			arguments: [
+				this.navigateLocation,
+				this.entry.localPath.trim()
+			],
 		};
+	}
+
+	get navigateLocation(){
+		if (this.entry.status === 'failed'){
+			const errLocationRegExp = new RegExp(`${this.entry.localPath.trim()}:([0-9]+):([0-9]+)`);
+			const matchResult = this.entry.failureMessages[0].match(errLocationRegExp);
+			
+			return matchResult ? { line: Number(matchResult[1]), column: Number(matchResult[2]) } : this.entry.location;
+		}
+
+		return this.entry.location;
 	}
 
 	get tooltip(): string {
@@ -25,27 +39,29 @@ export default class Test extends vscode.TreeItem {
 	}
 
 	get iconPath() {
-		if (this.entry.pass) {
-			return {
-				light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'pass.svg'),
-				dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'pass.svg')
-			};
-		} else if (this.entry.fail) {
-			return {
-				light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'fail.svg'),
-				dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'fail.svg')
-			};
-		} else if (this.entry.state === 'skipped') {
-			return {
-				light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'skip.svg'),
-				dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'skip.svg')
-			};
-		} else {
-			return {
-				light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'caution.svg'),
-				dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'caution.svg'),
-			};
+		switch (this.entry.status) {
+			case 'passed':
+				return {
+					light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'pass.svg'),
+					dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'pass.svg')
+				}
+			case 'failed':
+				return {
+					light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'fail.svg'),
+					dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'fail.svg')
+				};
+			case 'pending':
+				return {
+					light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'skip.svg'),
+					dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'skip.svg')
+				};
+			default:
+				return {
+					light: path.join(__filename, '..', '..', '..', 'resources', 'color', 'caution.svg'),
+					dark: path.join(__filename, '..', '..', '..', 'resources', 'color', 'caution.svg'),
+				};
 		}
+
 	}
 
 	contextValue = 'dependency';

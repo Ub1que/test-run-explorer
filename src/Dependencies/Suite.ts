@@ -4,13 +4,14 @@ import * as path from 'path';
 export default class Suite extends vscode.TreeItem {
 	constructor(
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+		public readonly title: any,
 		public readonly entry: any
 	) {
-		super(entry.title, collapsibleState);
+		super(title, collapsibleState);
 	}
 
 	get tooltip(): string {
-		return `${this.entry.title}`;
+		return `${this.title}`;
 	}
 
 	get description(): string {
